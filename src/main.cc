@@ -22,8 +22,8 @@ int main() {
 	Movement bestMove = mm.getBestMove();
 	bestMove.playAndAssignOwner(board, PLAYER2);
 
-
-	cout << "The best move is \nx: " << bestMove.getXPos() << "\ny: " << bestMove.getYPos()
+	// Dirección 3 es "SOUTH"
+	cout << "The best move is \nx (row): " << bestMove.getXPos() << "\ny (column): " << bestMove.getYPos()
 		<< "\nDirection: " << bestMove.getLineDirection() << endl;
 	
     return 0;
