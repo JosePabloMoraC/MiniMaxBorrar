@@ -1,16 +1,18 @@
 #include "Player.hh"
 #include <cstdlib>
 
-Movement Player::randomPlay(Board &board) {
+Movement Player::randomPlay(Board& board) {
   vector<Movement> availableMoves = board.getAvailableMoves();
   // Numero al azar de 0 a n-1
   int randNum = (rand() % (availableMoves.size()));
   return availableMoves[randNum];
 }
 
-Movement PlayerEasy::rehearsedPlay(Board &board) { return randomPlay(board); }
+Movement PlayerEasy::rehearsedPlay(Board& board) {
+  return randomPlay(board);
+}
 
-Movement PlayerMid::rehearsedPlay(Board &board) {
+Movement PlayerMid::rehearsedPlay(Board& board) {
   vector<Movement> tripleOptionMoves;
   vector<Movement> everyOptionMoves;
   vector<Movement> availableMoves = board.getAvailableMoves();
@@ -49,48 +51,50 @@ Movement PlayerMid::rehearsedPlay(Board &board) {
     }
   }
   // Revisar opciones.
-  if (!tripleOptionMoves.empty() && findBestMove(board, tripleOptionMoves)) {
-    return *(findBestMove(board, tripleOptionMoves));
-  } else if (!everyOptionMoves.empty() &&
-             findBestMove(board, everyOptionMoves)) {
-    return *(findBestMove(board, everyOptionMoves));
+  auto bestMove = findBestMove(board, tripleOptionMoves);
+  if (!tripleOptionMoves.empty() && bestMove.isValid()) {
+    return bestMove;
   } else {
-    return randomPlay(board);
+    bestMove = findBestMove(board, everyOptionMoves);
+    if (!everyOptionMoves.empty() && bestMove.isValid()) {
+      return bestMove;
+    } else {
+      return randomPlay(board);
+    }
   }
 }
 
-Movement *PlayerMid::findBestMove(Board &board,
-                                  vector<Movement> possibleMoves) {
+Movement PlayerMid::findBestMove(Board& board, vector<Movement> possibleMoves) {
   for (int i = 0; i < possibleMoves.size(); i++) {
     int x = possibleMoves[i].getXPos();
     int y = possibleMoves[i].getYPos();
     switch (possibleMoves[i].getLineDirection()) {
-    case WEST:
-      if (y > 0 && board.getCell(x, y - 1)->availableMovesCount() > 2) {
-        return &(possibleMoves[i]);
-      }
-      break;
-    case EAST:
-      if (y < board.getBoardColSize() &&
-          board.getCell(x, y + 1)->availableMovesCount() > 2) {
-        return &(possibleMoves[i]);
-      }
-      break;
-    case NORTH:
-      if (x > 0 && board.getCell(x - 1, y)->availableMovesCount() > 2) {
-        return &(possibleMoves[i]);
-      }
-      break;
-    case SOUTH:
-      if (x < board.getBoardRowSize() &&
-          board.getCell(x + 1, y)->availableMovesCount() > 2) {
-        return &(possibleMoves[i]);
-      }
-      break;
+      case WEST:
+        if (y > 0 && board.getCell(x, y - 1)->availableMovesCount() > 2) {
+          return possibleMoves[i];
+        }
+        break;
+      case EAST:
+        if (y < board.getBoardColSize() &&
+            board.getCell(x, y + 1)->availableMovesCount() > 2) {
+          return possibleMoves[i];
+        }
+        break;
+      case NORTH:
+        if (x > 0 && board.getCell(x - 1, y)->availableMovesCount() > 2) {
+          return possibleMoves[i];
+        }
+        break;
+      case SOUTH:
+        if (x < board.getBoardRowSize() &&
+            board.getCell(x + 1, y)->availableMovesCount() > 2) {
+          return possibleMoves[i];
+        }
+        break;
 
-    default:
-      break;
+      default:
+        break;
     }
   }
-  return nullptr;
+  return Movement(false);
 }

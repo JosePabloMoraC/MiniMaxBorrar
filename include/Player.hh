@@ -29,7 +29,7 @@ class PlayerMid : public Player {
 public:
   // Busca un movimiento que no implique un mal movimiento para las celdas
   // alrededor.
-  Movement *findBestMove(Board &board, vector<Movement> possibleMoves);
+  Movement findBestMove(Board &board, vector<Movement> possibleMoves);
   /*
   Busca confundir al jugador medio cerrando una caja,
   o busca la posibilidad de cerrar alguna caja, cuando

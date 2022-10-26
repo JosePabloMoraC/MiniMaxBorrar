@@ -17,10 +17,10 @@ public:
   ~Board();
   // Recorre el vector para darle los puntos de cada caja que posee cada
   // jugador.
-  void scoreUpdater();
   // Puntuacion individual (puede ser opcional dependiendo de quien la ocupe).
   int getScoreP1();
   int getScoreP2();
+  void increaseScore(enum OwnerType player, int diff);
   // Cantidad de filas y columnas.
   int getBoardRowSize();
   int getBoardColSize();

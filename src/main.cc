@@ -16,9 +16,9 @@ int main() {
 
 	cout << "Movimientos disponibles en el tablero: " << board.getAvailableMoves().size() << endl;
 	// False indica que siguiente movimiento es de Min, profundidad 3.
-	MiniMax mm = {board, false, 3};
+	MiniMax mm(board, true, 5);
 	// siempre que se llama el minimax debe ser true para indicar que es el primer nivel.
-	mm.performMiniMax(true);
+	mm.performMiniMax(PLAYER2, PLAYER1);
 	Movement bestMove = mm.getBestMove();
 	bestMove.playAndAssignOwner(board, PLAYER2);
 
